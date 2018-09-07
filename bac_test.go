@@ -9,7 +9,7 @@ var _ = Describe("Bac", func() {
 
 	Describe("Random letter", func () {
 		It("should display a random letter", func() {
-			Expect
+			Expect(generateLetter())
 		})
 	})
 })

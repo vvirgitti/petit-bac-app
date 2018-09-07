@@ -15,6 +15,11 @@ type PageData struct {
 	Letter string
 }
 
+//CategoryData is used to populate the categories
+type CategoryData struct {
+	Categories []string
+}
+
 func generateLetter() string {
 	var runes = []rune("abcdefghijklmnopqrstuvwxyz")
 	randRune := make([]rune, 1)
@@ -27,18 +32,27 @@ func generateLetter() string {
 }
 
 func main() {
-	tmpl, err := template.ParseFiles("index.html")
+	tmpl, err := template.ParseFiles("game.html")
+	cat, err := template.ParseFiles("categorie.html")
 	if err != nil {
 		fmt.Println("Error while parsing the html", err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/game", func(w http.ResponseWriter, r *http.Request) {
 		data := PageData{
 			PageTitle: "Petit Bac App",
 			Letter: strings.ToUpper(generateLetter()),
 		}
 		tmpl.Execute(w, data)
 	})
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request){
+		category := CategoryData {
+			Categories: []string{"Sport", "TV shows"},
+		}
+		cat.Execute(w, category)
+	})
+
 	http.ListenAndServe(":8080", nil)
 }
 
