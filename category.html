@@ -2,17 +2,30 @@
 
 {{template "layout"}}
 
+<script>
+  $(document).ready(function(){
+    $("a.list-group-item.list-group-item-action").click(function(){
+        $("a.list-group-item.list-group-item-action").toggleClass("active disabled");
+    });
+});
+</script>
+
 <div class="container">
   <div class="row">
     <div class="col">
-      <h3>Please choose a category</h3>
+      <h3>Please select 2 categories</h3>
     </div>
   </div>
   <div class="row">
-      <div class="col">
-        <ul>{{range .Categories}}{{.}} {{end}}</ul>
-      </div>
+    <div class="col-sm-6">
+      <ul>{{range .Categories}}
+        <div class="list-group">
+          <a href="#" class="list-group-item list-group-item-action">{{.}}</a>
+        </div>
+        {{end}}
+      </ul>
     </div>
+  </div>
 </div>
 
 {{end}}

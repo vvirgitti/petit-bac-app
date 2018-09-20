@@ -38,7 +38,7 @@ func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		fmt.Println("Error while parsing the html", err)
 	}
 	category := CategoryData {
-		Categories: []string{"Sport", "TV shows"},
+		Categories: []string{"TV show", "Movie", "Actor", "Actress"},
 	}
 	cat.ExecuteTemplate(w, "category", category)
 }

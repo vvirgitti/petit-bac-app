@@ -2,14 +2,14 @@ package main
 
 import (
 	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	// . "github.com/onsi/gomega"
 )
 
-var _ = Describe("Bac", func() {
+var _ = Describe("", func() {
 
-	Describe("Random letter", func () {
-		It("should display a random letter", func() {
-			Expect(generateLetter())
-		})
-	})
+	// Describe("", func () {
+	// 	It("", func() {
+	// 		Expect()
+	// 	})
+	// })
 })
