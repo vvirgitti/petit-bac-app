@@ -1,11 +1,13 @@
 package main
 
 import (
-	"strings"
+	"log"
 	"fmt"
 	"math/rand"
 	"time"
 	"net/http"
+	"github.com/julienschmidt/httprouter"
+	"strings"
 	"html/template"
 )
 
@@ -13,11 +15,6 @@ import (
 type PageData struct {
 	PageTitle string
 	Letter string
-}
-
-//CategoryData is used to populate the categories
-type CategoryData struct {
-	Categories []string
 }
 
 func generateLetter() string {
@@ -31,28 +28,28 @@ func generateLetter() string {
 	return string(randRune)
 }
 
-func main() {
-	tmpl, err := template.ParseFiles("game.html")
-	cat, err := template.ParseFiles("categorie.html")
+func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Fprintln(w, "Welcome!")
+}
+
+
+func Game(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		fmt.Println("Error while parsing the html", err)
 	}
-
-	http.HandleFunc("/game", func(w http.ResponseWriter, r *http.Request) {
-		data := PageData{
-			PageTitle: "Petit Bac App",
-			Letter: strings.ToUpper(generateLetter()),
-		}
-		tmpl.Execute(w, data)
-	})
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request){
-		category := CategoryData {
-			Categories: []string{"Sport", "TV shows"},
-		}
-		cat.Execute(w, category)
-	})
-
-	http.ListenAndServe(":8080", nil)
+	data := PageData{
+		PageTitle: "Petit Bac App",
+		Letter: strings.ToUpper(generateLetter()),
+	}
+	tmpl.Execute(w, data)
 }
 
+func main() {
+	router := httprouter.New()
+	router.GET("/", Index)
+	router.GET("/game", Game)
+
+	log.Fatal(http.ListenAndServe(":8080", router))
+
+}
