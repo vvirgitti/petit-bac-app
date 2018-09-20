@@ -17,6 +17,10 @@ type PageData struct {
 	Letter string
 }
 
+type CategoryData struct {
+	Categories []string
+}
+
 func generateLetter() string {
 	var runes = []rune("abcdefghijklmnopqrstuvwxyz")
 	randRune := make([]rune, 1)
@@ -29,12 +33,19 @@ func generateLetter() string {
 }
 
 func Index(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	fmt.Fprintln(w, "Welcome!")
+	cat, err := template.ParseFiles("category.html", "index.html")
+	if err != nil {
+		fmt.Println("Error while parsing the html", err)
+	}
+	category := CategoryData {
+		Categories: []string{"Sport", "TV shows"},
+	}
+	cat.ExecuteTemplate(w, "category", category)
 }
 
 
 func Game(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	tmpl, err := template.ParseFiles("index.html")
+	tmpl, err := template.ParseFiles("game.html", "index.html")
 	if err != nil {
 		fmt.Println("Error while parsing the html", err)
 	}
@@ -42,7 +53,7 @@ func Game(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		PageTitle: "Petit Bac App",
 		Letter: strings.ToUpper(generateLetter()),
 	}
-	tmpl.Execute(w, data)
+	tmpl.ExecuteTemplate(w, "game", data)
 }
 
 func main() {
