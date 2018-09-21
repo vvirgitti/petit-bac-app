@@ -56,10 +56,26 @@ func Game(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	tmpl.ExecuteTemplate(w, "game", data)
 }
 
+func Answer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	fmt.Println("method:", r.Method)
+	err := r.ParseForm()
+	if err != nil {
+		log.Fatal(err)
+	}	
+	fmt.Printf("%+v\n", r.Form) 
+	for key, values := range r.Form {   // range over map
+		for _, value := range values {    // range over []string
+			 fmt.Println(key, value)
+		}
+	}
+	fmt.Println("Answer ", r)
+}
+
 func main() {
 	router := httprouter.New()
 	router.GET("/", Index)
 	router.GET("/game", Game)
+	router.POST("/game", Answer)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 
