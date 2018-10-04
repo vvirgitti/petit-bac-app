@@ -4,8 +4,8 @@ Le petit bac is a simple game: a letter of the alphabet is randomly chosen and y
 
 ### How to start
 ```
-go build bac.go
-./bac
+go build
+./petit-bac-app
 ```
 
 The server will start on `http://localhost:8080`

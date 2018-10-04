@@ -102,7 +102,7 @@ func Answer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Println("Movie List", movieList)
 
 	if Contains(movieList, answer) {
-		fmt.Println("Success")
+		redirect(w, r, "/game")
 	} else {
 		fmt.Println("Bad answer")
 	}
@@ -110,13 +110,8 @@ func Answer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	defer res.Body.Close()
 }
 
-func Contains(a []string, x string) bool {
-	for _, n := range a {
-		if x == n {
-			return true
-		}
-	}
-	return false
+func redirect(w http.ResponseWriter, r *http.Request, url string) {
+	http.Redirect(w, r, url, 301)
 }
 
 func main() {
@@ -150,3 +145,13 @@ type MovieReponse struct {
 		ReleaseDate      string  `json:"release_date"`
 	} `json:"results"`
 }
+
+func Contains(a []string, x string) bool {
+	for _, n := range a {
+		if x == n {
+			return true
+		}
+	}
+	return false
+}
+
