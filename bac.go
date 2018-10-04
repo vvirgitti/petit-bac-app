@@ -57,18 +57,17 @@ func Game(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func Answer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	fmt.Println("method:", r.Method)
 	err := r.ParseForm()
 	if err != nil {
 		log.Fatal(err)
 	}	
-	fmt.Printf("%+v\n", r.Form) 
-	for key, values := range r.Form {   // range over map
-		for _, value := range values {    // range over []string
-			 fmt.Println(key, value)
+	var answer string
+	for _, values := range r.Form {   
+		for _, value := range values {
+			answer = value
 		}
 	}
-	fmt.Println("Answer ", r)
+	fmt.Println("Answer ", answer)
 }
 
 func main() {
