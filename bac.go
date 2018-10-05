@@ -59,6 +59,7 @@ func Game(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 }
 
 func Answer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+	var counter int
 	err := r.ParseForm()
 	if err != nil {
 		log.Fatal(err)
@@ -102,11 +103,13 @@ func Answer(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	fmt.Println("Movie List", movieList)
 
 	if Contains(movieList, answer) {
-		redirect(w, r, "/game")
+		fmt.Println("Correct answer")
+		counter ++
 	} else {
 		fmt.Println("Bad answer")
 	}
 
+	redirect(w, r, "/game")
 	defer res.Body.Close()
 }
 
@@ -119,6 +122,8 @@ func main() {
 	router.GET("/", Index)
 	router.GET("/game", Game)
 	router.POST("/game", Answer)
+	
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 
